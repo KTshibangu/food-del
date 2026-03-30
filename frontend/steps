@@ -1,0 +1,246 @@
+- Set up react
+- create navbar component 
+- import asstes 
+- open assets.js file 
+- use it for img
+- use navbar css to position and style accordingly
+- usestate to set the underline on the nvabar-menu and use the active css class
+- set the onclick to setmenu()
+- style the dot to be -8px top and -8px right of the basket icon
+
+- create pages for home, cart, place order and their respective css files
+- wrap app with BrowseRouter 
+- create Routes for these pages
+- create a header folder and files
+- header-contents with h1 p and button 
+- add a key frame for fade in
+
+- create explore menu folder and files
+- import menu list array from assets
+- complete the html and css
+- map the menu list items 
+- create a category state and pass it as a prop with its setter function
+- destructure this in the explore menu 
+- and on onlick of a list-menu-item, if prev = menu-item return all or return emnu-item
+- set img to be have an active class depedning on the category
+
+- create a context folder and store context file
+- wrap the app in it in the main.jsx
+- import the food list in the store context
+
+- create a food display folder and files
+- import food_list with context
+- mount food display to home and pass category prop
+- destructure category
+- map food list 
+- create food item folder in components and files 
+- the food_list will be mapped over the food item component which will receive all the props
+- in the food item component destrcuture these props
+- complete the food item componenbt to display the data
+- create a itemcount state
+- if itemcount = 0, display the add and on click add from the prev state
+- if itemcount !== 0, display the food-item-counter div with the plus and minus icon
+- in the food-item-counter, add or remove 
+
+- in the store contexxt, create a cartitems state 
+- create an addtocart function which adds item[itemId] quantiy to 1 to the previous if this item is not already in the cart
+- else if this item already exists, modify its quantity by adding 1 to prev[itemid]
+- pass it in the contextvalue
+
+- import cartitems, setcartitems, add and remove from cart to food item
+- remove itemcount, setitemcount and replace with above
+- remove the itemcount state
+
+- add an if state statement for filtering category in the food display component
+
+- create a footer folder and its files, complete this
+- mount this to the app
+
+- create an App download folder and its files
+- mount this to home
+
+- add media query for max-width 1050, 900, 750 
+
+
+- set link for the Navbar link home to '/', and the rest to a href
+
+- set * in the index.css to scroll-behavior smooth
+
+- create a loginpopup compoent folder with its files.
+- in app.jsx, create state for showLogging
+- if showlogging is true, display loginpopup else empty <></>
+- pass setshowlogging as a navbar prop and destructure it
+- on click of sign in show logging to true
+- design the loginpopup component, create a current state pass in sign up
+- in the app.jsx pass set showlogin in loginpopup 
+- in the loginpopup component, onclick of cross showlogin to false
+- add inputs for name, email and password
+- button which dynamically changes from create account to login
+- add a condition to not show name input when current state is login
+- create a login-popup-condition
+- if state is login/signup shoew the correct paragraph
+- add onclick, to change the current state
+- style the login-popup
+
+- go to cart, import from context [cartitems, foodlist, removefromcart]
+- link busket to cart page
+- map the the food list in that if cartitems id > 0 return the item image, name, price, quantity, total, and a x remove btn
+- on click of the x remove from cart
+- include a promocode area
+- style this and make it responsible
+
+- in the storecontext, create a gettotalcartamount function
+- use for in loop because cartitems is an object
+- if there is a cartitems[item], let iteminfo find the food which matches the item
+- totalAmount += iteminfo.price * cartitems[item]
+- export getTotalCartAmount
+- in cart jsx import it and replace subtotal with and get total by adding delivery fee
+- import it in the navbar to make the basket dynamic
+
+- crerate a navigate variable
+- on click of proceed to check out btn should navigate to /order
+- in the place order page, the left side is for all input info.
+- the right side is the copy of the cart-total div from cart.jsx
+- modify button to proceed to payment and import getTotalCartAmount
+- style page
+- go back to cart and ensure if getTotalCartAmount is 0 delivery fee should also be 0 
+- modify it also in the cart.jsx
+
+Frontend is complete
+-----------------------------------------------------------------------------------------------
+
+- create a backend folder
+- npm init
+- entry point change it to server.js
+- npm install express mongoose jsonwebtoken bcrypt cors dotenv body-parser multer stripe validator nodemon
+- express - 
+- mongoose - help us to connect to the db
+- jsonwebtoken - auth system
+- bcrypt - encrypt the users data and store in the db
+- cors - permision to the frontend to connect with the backend
+- dotenv - we can use the environment variable 
+- body-parser - we can parse the data coming from the user
+- multer - create image tool system
+- stripe - addd payment gateways
+- validator - check password or email ids is valid
+- nodemon - when we save the server will be restarted
+- in the package.json change scripts 'sevrer' : 'nodemon server.js
+- create these folders: Config, Controllers, Middleware, Models, Routes, Uploads and .env
+- add a type in the package.json "module"
+
+- set up the server.js
+- import express, import cors
+- const app is express()
+- const port is 4000
+- define middleware 
+- app.use(express.json())
+- app.use(cors())
+- connectDB from the db.js
+- API app.get('/', (req, res) => {res.send'API WORKING'})
+- app.listen(port, () => {console.log(`started on http:localhost:${port}`)})
+
+- create a db.js from config folder
+- export const connectDB = async () => {
+    await mongoose.connect('mongodb+srv://roddy:krtholyrhyme1994@cluster0.ldxizom.mongodb.net/FoodDelivery')
+    .then(() => console.log("DB Connected"));
+}
+- create a foodmodel within model
+- define foodSchema = new mongoose.schema
+- create a foodmodel which is mongoose.model('food', foodschema)
+- export the foodmodel
+- connect the db connectDB()
+- import the food model in the controller.js
+- import fs
+- create a add food function
+- in foodroute, import express, multer and all functions controllers
+- create a foodRouter and export it 
+- create an api endpoint in server
+- app.use(/api/food , foodrouter)
+- in route, foodrouter.post('/add', addfood)
+//image storage engine
+const storage = multer.diskStorage({
+    destination: "Uploads",
+    filename: (req, file, cb) => {
+        return cb(null, `${Date.now()}${file.originalname}`)
+    }
+})
+
+const upload = multer({storage:storage});
+- modify post method to add upload.single('image')
+- create image api endpoint app.use('/images', express.static('uploads'))
+- in controller, create a list food async funtion
+const listFood controller = async (req, res) => {
+    try {
+        const foods = await foodModel.find({});
+        res.json({success: true, data:foods})
+    } catch (error) {
+        console.log(error);
+        res.json({sucess: false, message: 'Error'})
+    }
+}
+- create a get route in route.js for listFood
+- test this with postman
+- create a removefood controller 
+- const removeFood = async (req, res) => {
+    try {
+        const food = await foodModel.findById(req.body.id);
+        fs.unlink(`uploads/${food.image}`, () => {})
+
+        await foodModel.findByIdAndDelete(req.body.id);
+        res.json({success: true, message: "Food Removed"});
+    } catch (error) {
+        console.log(error);
+        res.json({sucess: false, message: 'Error'})
+    }
+}
+- create a post route for removeFood
+- test this api endpoint
+- create an admin folder at root
+- create vite@latest .
+- install and run
+- get rid of App.css
+- Clear index.css and App.jsx
+- create components and pages folder
+- bring the selected asssets (addicon, logo, assets, ordericon, parcelicon, profileimage, uploadarea)
+- in terminal, ctrl+c to stop project and install more packages
+- npm isntall axios react-toastify react-router-dom
+- npm run dev
+- create sidebar, navbar components
+- import in app.jsx 
+- import browserouter in main and wrap app in it
+- complete navbar and style it
+- complete sidebar and style it
+- create pages folder
+- create Add, List and Orders pages with its components
+- Routes and Route to import these pages
+- in sidebar, replace div with navlink and to {'/'}
+- complete Add page with a form for inputing all the fields and image file upload
+- for image upload, create a image state
+- in the input onchange((e) => setimage(e.target.files[0]))
+- to preview the image, if image, createObjectURL(image) if not, upload_area picture
+- create a data state and pass an object will all the fields you are expecting (name, desc, price, cat)
+- create a onchangehandler function
+- const onChangeHandler = (e) => {
+        const name = e.target.name;
+        const value = e.target.value;
+        setData(data => ({...data,[name]:value}));
+}
+- set the onchange of all inputs to the onchnagehandler function
+- add useeefect, console.log data to see changes
+- create a onsubmithandler async function 
+- prevent submit reload
+- const formData = new FormData()
+- append all the fields
+- import axios
+- create a response variable, which post formData to the api
+- if response.data.success, reset all fields
+- go to toastify react, copy import
+- import toastcontainer in app.jsx
+- if response.data.success, toast.success displays the response.data.message
+- else displays the response.data.message when there is an error
+- iin Lis.jsx create a lst state
+- import axios
+- create a response variable, which get data deom the api
+
+
+
